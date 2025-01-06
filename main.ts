@@ -4,24 +4,15 @@
 namespace EtCommon {
 
     export enum Comparison {
-        //% block="="
-        //% block.loc.nl="="
-        COMP_EQ,
-        //% block="<>"
-        //% block.loc.nl="<>"
-        COMP_NEQ,
-        //% block=">"
-        //% block.loc.nl=">"
-        COMP_GT,
-        //% block="<"
-        //% block.loc.nl="<"
-        COMP_LT,
-        //% block=">="
-        //% block.loc.nl=">="
-        COMP_EGT,
-        //% block="<="
-        //% block.loc.nl="<="
-        COMP_ELT
+        //% block="normal"
+        //% block.loc.nl="normaal"
+        COMP_NORMAL,
+        //% block="less than"
+        //% block.loc.nl="minder dan"
+        COMP_LESS,
+        //% block="greater than"
+        //% block.loc.nl="meer dan"
+        COMP_GREATER
     }
 
     class Message {
@@ -136,29 +127,12 @@ namespace EtCommon {
 
     export function compareValue(module: string, signal: string, value: string,
         comp: Comparison) {
-        let msg = module + ";C;" + signal + ";" + value
+        let cmd = ";N;"
         switch (comp) {
-            case Comparison.COMP_EQ: msg += "==|"; break;
-            case Comparison.COMP_NEQ: msg += "!=|"; break;
-            case Comparison.COMP_GT: msg += ">|"; break;
-            case Comparison.COMP_LT: msg += "<|"; break;
-            case Comparison.COMP_EGT: msg += ">=|"; break;
-            case Comparison.COMP_ELT: msg += "<=|"; break;
+            case Comparison.COMP_LESS: cmd += "';L;"; break;
+            case Comparison.COMP_GREATER: cmd += ";G;"; break;
         }
-        serial.writeLine(msg)
-    }
-
-    export function waitValue(module: string, signal: string,
-        value: string, comp: Comparison) {
-        let msg = module + ";W;" + signal + ";" + value
-        switch (comp) {
-            case Comparison.COMP_EQ: msg += "==|"; break;
-            case Comparison.COMP_NEQ: msg += "!=|"; break;
-            case Comparison.COMP_GT: msg += ">|"; break;
-            case Comparison.COMP_LT: msg += "<|"; break;
-            case Comparison.COMP_EGT: msg += ">=|"; break;
-            case Comparison.COMP_ELT: msg += "<=|"; break;
-        }
+        let msg = module + cmd + signal + ";" + value
         serial.writeLine(msg)
     }
 
