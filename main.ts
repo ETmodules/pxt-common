@@ -87,14 +87,11 @@ let x = 0
             this.items.push(e)
         }
         public onEvent(module: string, signal: string, value: string) {
-basic.showString("-"+module+"-"+signal+"-"+value+"-")
             for (let i = 0; i < this.items.length; i++) {
                 let item = this.items[i]
-basic.showString("-"+item.mod+"-"+item.sig+"-"+item.val+"-")
                 if ((item.mod == module) &&
                     (item.sig == signal) &&
                     (item.val == value)) {
-basic.showNumber(++x)
                     item.hnd(module)
                     return
                 }
@@ -146,8 +143,10 @@ basic.showNumber(++x)
             // instead it is returned to be handled by 'onEvent'
             let msg = g_messages.add(BUFFER)
             BUFFER = ""
-            if (msg)
+            if (msg) {
+basic.showString(msg.mod)
                 events.onEvent( msg.mod, msg.sig, msg.val)
+            }
         }
     })
 
