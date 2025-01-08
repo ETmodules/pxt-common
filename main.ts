@@ -87,6 +87,7 @@ namespace EtCommon {
             this.items.push(e)
         }
         public onEvent(module: string, signal: string, value: string) {
+basic.showString("E")
             for (let i = 0; i < this.items.length; i++)
                 if (this.items[i].mod == module &&
                     this.items[i].sig == signal &&
@@ -136,6 +137,7 @@ basic.showNumber(i)
 
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
+basic.showString(BUFFER)
         if (!BUFFER.isEmpty()) {
             // an event message is not stored
             // instead it is returned to be handled by 'onEvent'
