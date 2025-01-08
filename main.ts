@@ -69,7 +69,6 @@ namespace EtCommon {
             this.sig = signal
             this.val = value
             this.hnd = handler
-handler(module)
         }
         public mod: string
         public sig: string
@@ -92,6 +91,7 @@ handler(module)
                 if ((this.items[i].mod == module) &&
                     (this.items[i].sig == signal) &&
                     (this.items[i].val == value)) {
+basic.showString("o")
                     this.items[i].hnd(module)
                     return
                 }
