@@ -3,65 +3,9 @@
 //% block.loc.nl="ElecTricks"
 namespace EtCommon {
 
-    export enum Comparison {
-        //% block="normal"
-        //% block.loc.nl="normaal"
-        COMP_NORMAL,
-        //% block="less than"
-        //% block.loc.nl="minder dan"
-        COMP_LESS,
-        //% block="greater than"
-        //% block.loc.nl="meer dan"
-        COMP_GREATER
-    }
-
-    class Parameter {
-        constructor(module: string, parameter: string, value: number) {
-            this.mod = module
-            this.parm = parameter
-            this.val = value
-        }
-        public mod: string
-        public parm: string
-        public val: number
-    }
-
-    class Parameters {
-        constructor() {
-            this.params = []
-        }
-        public create( module: string, parameter: string, value: number) {
-            let p = new Parameter(module, parameter, value)
-            this.params.push(p)
-        }
-        public set( module: string, parameter: string, value: number) {
-            for (let i = 0; i < this.params.length; i++)
-                if (this.params[i].mod == module &&
-                        this.params[i].parm == parameter) {
-                    this.params[i].val = value
-                    break;
-                }
-        }
-        public isTrue(module: string, parameter: string): boolean {
-            for (let i = 0; i < this.params.length; i++)
-                if (this.params[i].mod == module &&
-                    this.params[i].parm == parameter) {
-                    return (this.params[i].val == 1)
-                }
-            return false;
-        }
-        public isEqual(module: string, parameter: string, value: number): boolean {
-            for (let i = 0; i < this.params.length; i++)
-                if (this.params[i].mod == module &&
-                    this.params[i].parm == parameter) {
-                    return (this.params[i].val == value)
-                }
-            return false;
-        }
-        params: Parameter[]
-    }
-
-    export let status: Parameters
+    ///////////////
+    // MESSAGING //
+    ///////////////
 
     class Message {
         constructor(msg: string) {
@@ -114,6 +58,58 @@ namespace EtCommon {
 
     let g_messages = new Messages
 
+    ////////////////////
+    // EVENT HANDLING //
+    ////////////////////
+
+    class Event {
+        constructor(module: string, signal: string, value: string) {
+            this.mod = module
+            this.sig = signal
+            this.val = value
+        }
+        public mod: string
+        public sig: string
+        public val: string
+    }
+
+    class Events {
+        constructor() {
+            this.params = []
+        }
+        public create(module: string, signal: string, value: string) {
+            let p = new Event(module, signal, value)
+            this.params.push(p)
+        }
+        public set(module: string, signal: string, value: string) {
+            for (let i = 0; i < this.params.length; i++)
+                if (this.params[i].mod == module &&
+                    this.params[i].sig == signal) {
+                    this.params[i].val = value
+                    break;
+                }
+        }
+        public isTrue(module: string, signal: string): boolean {
+            for (let i = 0; i < this.params.length; i++)
+                if (this.params[i].mod == module &&
+                    this.params[i].sig == signal) {
+                    return (this.params[i].val == "true")
+                }
+            return false;
+        }
+        public isEqual(module: string, signal: string, value: string): boolean {
+            for (let i = 0; i < this.params.length; i++)
+                if (this.params[i].mod == module &&
+                    this.params[i].sig == signal) {
+                    return (this.params[i].val == value)
+                }
+            return false;
+        }
+        params: Event[]
+    }
+
+    export let events: Events
+
     export type eventHandler = (id: string) => void
     export type eventItem = { handler: eventHandler, module: string, signal: string }
     export let eventArray: eventItem[] = []
@@ -125,6 +121,10 @@ namespace EtCommon {
         })
     }
 
+    /////////////
+    // STARTUP //
+    /////////////
+
     serial.redirect(
         SerialPin.P13,
         SerialPin.P14,
@@ -133,6 +133,15 @@ namespace EtCommon {
 
     serial.setRxBufferSize(64)
     serial.setTxBufferSize(64)
+
+    // wait until wemos has started
+    basic.showIcon(IconNames.SmallHeart)
+    while (serial.readUntil('\n').isEmpty()) { }
+    basic.showIcon(IconNames.Heart)
+
+    ///////////////////////////
+    // BASIC SIGNAL HANDLING //
+    ///////////////////////////
 
     let BUFFER = ""
 
@@ -143,46 +152,53 @@ namespace EtCommon {
             // instead it is returned to be handled by 'callEvent'
             let msg = g_messages.add(BUFFER)
             BUFFER = ""
-            if (msg)
+            if (msg) {
+                events.set( msg.mod, msg.sig, msg.val)
                 callEvent(msg.mod, msg.sig)
+            }
         }
     })
 
-    // wait until wemos is started
-    basic.showIcon(IconNames.SmallHeart)
-    while (serial.readUntil('\n').isEmpty()) { }
-    basic.showIcon(IconNames.Heart)
-
-    export function getValue(module: string, command: string, signal: string): string {
-        let val = ""
-        do {
-            val = g_messages.value(module, command, signal)
-            basic.pause(1)  // anable 'onDataReceived' to receive a message
-        }                   // instead of 'yield' which isn't part of typescript
-        while (val.isEmpty())
-        return val
-    }
-
+    // 'setValue' sends a signal value to a module to be set
+    // this applies to actuator modules
     export function setValue(module: string, signal: string, value: string) {
         let msg = module + ";S;" + signal + ";" + value
         serial.writeLine(msg)
     }
 
+    // 'askValue' sends a signal to a module to request its value
+    // use 'getValue' to retrieve the value returned by the module
+    // this applies to sensor modules
     export function askValue(module: string, signal: string) {
         let msg = module + ";A;" + signal
         serial.writeLine(msg)
     }
 
-    export function compareValue(module: string, signal: string, value: string,
-        comp: Comparison) {
-        let cmd = ";N;"
-        switch (comp) {
-            case Comparison.COMP_LESS: cmd += "';L;"; break;
-            case Comparison.COMP_GREATER: cmd += ";G;"; break;
-        }
-        let msg = module + cmd + signal + ";" + value
+    // 'getValue' waits for a signal's value to be returned
+    // before a call to 'getValue' the value must be requested by 'askValue'
+    // this applies to sensor modules
+    export function getValue(module: string, command: string, signal: string): string {
+        let val = ""
+        do {
+            val = g_messages.value(module, command, signal)
+            basic.pause(1)  // anable 'onDataReceived' to receive messages meanwhile
+        }                   // instead of 'yield', which isn't part of typescript
+        while (val.isEmpty())
+        return val
+    }
+
+    // 'setEventValue' sends an event's critical value to a module
+    // after passing the critical value, the module will send an event
+    // (note that events are signals too, but accompanied by the command 'E')
+    // this applies to sensor modules
+    export function setEventValue(module: string, signal: string, value: string) {
+        let msg = module + ";E;" + signal + ";" + value
         serial.writeLine(msg)
     }
+
+    //////////////////////
+    // GENERAL ROUTINES //
+    //////////////////////
 
     //% block="a number from %min utai %max"
     //% block.loc.nl="een getal van %min t/m %max"
