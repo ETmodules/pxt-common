@@ -137,13 +137,12 @@ namespace EtCommon {
     let BUFFER = ""
 
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
-basic.pause(100)
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
+basic.showString("-"+BUFFER.substr(0,3)+"-")
         if (!BUFFER.isEmpty()) {
             // an event message is not stored
             // instead it is returned to be handled by 'onEvent'
             let msg = g_messages.add(BUFFER)
-if (msg.mod != "EtAudio") basic.showString("-"+BUFFER+"-")
             BUFFER = ""
             if (msg) {
                 events.onEvent( msg.mod, msg.sig, msg.val)
