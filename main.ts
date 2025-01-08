@@ -61,7 +61,7 @@ namespace EtCommon {
     ////////////////////
     // EVENT HANDLING //
     ////////////////////
-
+/*
     class Event {
         constructor(module: string, signal: string, value: string,
                     handler: eventHandler) {
@@ -109,7 +109,7 @@ namespace EtCommon {
     }
 
     export let events = new Events
-
+*/
     export type eventHandler = (id: string) => void
 
     /////////////
