@@ -61,7 +61,7 @@ namespace EtCommon {
     ////////////////////
     // EVENT HANDLING //
     ////////////////////
-/*
+
     class Event {
         constructor(module: string, signal: string, value: string,
                     handler: eventHandler) {
@@ -109,7 +109,7 @@ namespace EtCommon {
     }
 
     export let events = new Events
-*/
+
     export type eventHandler = (id: string) => void
 
     /////////////
@@ -138,8 +138,6 @@ namespace EtCommon {
 
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-basic.showString("-"+BUFFER.substr(0,3)+"-")
-/*
         if (!BUFFER.isEmpty()) {
             // an event message is not stored
             // instead it is returned to be handled by 'onEvent'
@@ -149,7 +147,6 @@ basic.showString("-"+BUFFER.substr(0,3)+"-")
                 events.onEvent( msg.mod, msg.sig, msg.val)
             }
         }
-*/
     })
 
     // 'setValue' sends a signal value to a module to be set
