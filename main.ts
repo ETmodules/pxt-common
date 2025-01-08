@@ -26,7 +26,7 @@ namespace EtCommon {
     }
 
     class Messages {
-        public messages: Message[]
+        messages: Message[]
         constructor() {
             this.messages = []
         }
@@ -74,6 +74,7 @@ namespace EtCommon {
     }
 
     class Events {
+        params: Event[]
         constructor() {
             this.params = []
         }
@@ -105,10 +106,9 @@ namespace EtCommon {
                 }
             return false;
         }
-        params: Event[]
     }
 
-    export let events: Events
+    export let events = new Events
 
     export type eventHandler = (id: string) => void
     export type eventItem = { handler: eventHandler, module: string, signal: string }
