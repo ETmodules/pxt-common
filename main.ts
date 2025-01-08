@@ -14,6 +14,7 @@ namespace EtCommon {
             this.cmd = m[1]
             this.sig = m[2]
             this.val = m[3]
+if (this.mod != "EtAudio") basic.showNumber(0)
         }
         message(): string {
             let msg = this.mod + ";" + this.cmd + ";" + this.sig + ";" + this.val
@@ -32,6 +33,7 @@ namespace EtCommon {
         }
         add(msg: string): Message {
             let m = new Message(msg)
+if (m.mod != "EtAudio") basic.showNumber(1)
             if (m.cmd == "E")
                 return m // do not store events
             this.messages.push(m)
@@ -75,7 +77,7 @@ namespace EtCommon {
         public val: string
         public hnd: eventHandler
     }
-let x = 0
+
     class Events {
         items: Event[]
         constructor() {
@@ -142,9 +144,9 @@ let x = 0
             // an event message is not stored
             // instead it is returned to be handled by 'onEvent'
             let msg = g_messages.add(BUFFER)
+if (msg.mod != "EtAudio") basic.showString("-"+BUFFER+"-")
             BUFFER = ""
             if (msg) {
-basic.showString(msg.mod)
                 events.onEvent( msg.mod, msg.sig, msg.val)
             }
         }
