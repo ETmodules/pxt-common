@@ -85,7 +85,6 @@ namespace EtCommon {
                         handler: eventHandler) {
             let e = new Event(module, signal, value, handler)
             this.items.push(e)
-basic.showNumber(this.items.length)
         }
         public onEvent(module: string, signal: string, value: string) {
             for (let i = 0; i < this.items.length; i++)
@@ -93,7 +92,6 @@ basic.showNumber(this.items.length)
                     this.items[i].sig == signal &&
                     this.items[i].val == value) {
                     this.items[i].hnd(module)
-basic.showString(this.items[i].val)
                 }
         }
         public testEvent(module: string, signal: string, value: string) : boolean {
