@@ -87,8 +87,10 @@ let x = 0
             this.items.push(e)
         }
         public onEvent(module: string, signal: string, value: string) {
+basic.showString("-"+module+"-"+signal+"-"+value+"-")
             for (let i = 0; i < this.items.length; i++) {
                 let item = this.items[i]
+basic.showString("-"+item.mod+"-"+item.sig+"-"+item.val+"-")
                 if ((item.mod == module) &&
                     (item.sig == signal) &&
                     (item.val == value)) {
