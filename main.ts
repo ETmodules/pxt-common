@@ -153,6 +153,7 @@ namespace EtCommon {
             let msg = g_messages.add(BUFFER)
             BUFFER = ""
             if (msg) {
+basic.showString(msg.val)
                 events.set( msg.mod, msg.sig, msg.val)
                 callEvent(msg.mod, msg.sig)
             }
