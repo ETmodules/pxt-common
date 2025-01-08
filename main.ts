@@ -69,6 +69,7 @@ namespace EtCommon {
             this.sig = signal
             this.val = value
             this.hnd = handler
+handler(module)
         }
         public mod: string
         public sig: string
