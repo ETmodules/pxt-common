@@ -87,6 +87,7 @@ namespace EtCommon {
             this.items.push(e)
         }
         public onEvent(module: string, signal: string, value: string) {
+/*
 basic.pause(1000)
 basic.showString("E=")
 basic.showString(module)
@@ -98,7 +99,9 @@ basic.showString("--")
 basic.pause(1000)
 basic.showString("L=")
 basic.showNumber(this.items.length)
+*/
             for (let i = 0; i < this.items.length; i++) {
+/*
 basic.pause(1000)
 basic.showString("H=")
 basic.showString(this.items[i].mod)
@@ -107,13 +110,17 @@ basic.showString(this.items[i].sig)
 basic.showString("--")
 basic.showString(this.items[i].val)
 basic.showString("--")
+*/
                 if (this.items[i].mod == module &&
                     this.items[i].sig == signal &&
                     this.items[i].val == value) {
-basic.pause(1000)
+//basic.pause(1000)
 basic.showString("#=")
 basic.showNumber(i)
+if (this.items[i].hnd == null)
+basic.showString("nocall")
                     this.items[i].hnd(module)
+                    break
                 }
             }
         }
