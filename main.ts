@@ -15,6 +15,54 @@ namespace EtCommon {
         COMP_GREATER
     }
 
+    class Parameter {
+        constructor(module: string, parameter: string, value: number) {
+            this.mod = module
+            this.parm = parameter
+            this.val = value
+        }
+        public mod: string
+        public parm: string
+        public val: number
+    }
+
+    class Parameters {
+        constructor() {
+            this.params = []
+        }
+        public create( module: string, parameter: string, value: number) {
+            let p = new Parameter(module, parameter, value)
+            this.params.push(p)
+        }
+        public set( module: string, parameter: string, value: number) {
+            for (let i = 0; i < this.params.length; i++)
+                if (this.params[i].mod == module &&
+                        this.params[i].parm == parameter) {
+                    this.params[i].val = value
+                    break;
+                }
+        }
+        public isTrue(module: string, parameter: string): boolean {
+            for (let i = 0; i < this.params.length; i++)
+                if (this.params[i].mod == module &&
+                    this.params[i].parm == parameter) {
+                    return (this.params[i].val == 1)
+                }
+            return false;
+        }
+        public isEqual(module: string, parameter: string, value: number): boolean {
+            for (let i = 0; i < this.params.length; i++)
+                if (this.params[i].mod == module &&
+                    this.params[i].parm == parameter) {
+                    return (this.params[i].val == value)
+                }
+            return false;
+        }
+        params: Parameter[]
+    }
+
+    export let status: Parameters
+
     class Message {
         constructor(msg: string) {
             let m = msg.split(';')
