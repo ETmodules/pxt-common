@@ -14,7 +14,6 @@ namespace EtCommon {
             this.cmd = m[1]
             this.sig = m[2]
             this.val = m[3]
-if (this.mod != "EtAudio") basic.showNumber(0)
         }
         message(): string {
             let msg = this.mod + ";" + this.cmd + ";" + this.sig + ";" + this.val
@@ -33,7 +32,6 @@ if (this.mod != "EtAudio") basic.showNumber(0)
         }
         add(msg: string): Message {
             let m = new Message(msg)
-if (m.mod != "EtAudio") basic.showNumber(1)
             if (m.cmd == "E")
                 return m // do not store events
             this.messages.push(m)
@@ -124,8 +122,8 @@ if (m.mod != "EtAudio") basic.showNumber(1)
         BaudRate.BaudRate115200
     )
 
-    serial.setRxBufferSize(64)
-    serial.setTxBufferSize(64)
+    serial.setRxBufferSize(128)
+    serial.setTxBufferSize(128)
 
     // wait until wemos has started
     basic.showIcon(IconNames.SmallHeart)
