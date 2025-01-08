@@ -75,7 +75,7 @@ namespace EtCommon {
         public val: string
         public hnd: eventHandler
     }
-let x = ">"
+let x = 0
     class Events {
         items: Event[]
         constructor() {
@@ -91,8 +91,7 @@ let x = ">"
                 if ((this.items[i].mod == module) &&
                     (this.items[i].sig == signal) &&
                     (this.items[i].val == value)) {
-x = (x == ">" ? "<" : ">")
-basic.showString(x)
+basic.showNumber(++x)
                     this.items[i].hnd(module)
                     return
                 }
