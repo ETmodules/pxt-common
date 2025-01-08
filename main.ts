@@ -63,46 +63,35 @@ namespace EtCommon {
     ////////////////////
 
     class Event {
-        constructor(module: string, signal: string, value: string) {
+        constructor(module: string, signal: string, value: string,
+                    handler: eventHandler) {
             this.mod = module
             this.sig = signal
             this.val = value
+            this.hnd = handler
         }
         public mod: string
         public sig: string
         public val: string
+        public hnd: eventHandler
     }
 
     class Events {
-        params: Event[]
+        items: Event[]
         constructor() {
-            this.params = []
+            this.items = []
         }
-        public register(module: string, signal: string, value: string) {
-            let p = new Event(module, signal, value)
-            this.params.push(p)
+        public register(module: string, signal: string, value: string,
+                        handler: eventHandler) {
+            let e = new Event(module, signal, value, handler)
+            this.items.push(e)
         }
-        public set(module: string, signal: string, value: string) {
-            for (let i = 0; i < this.params.length; i++)
-                if (this.params[i].mod == module &&
-                    this.params[i].sig == signal) {
-                    this.params[i].val = value
-                    break;
-                }
-        }
-        public isTrue(module: string, signal: string): boolean {
-            for (let i = 0; i < this.params.length; i++)
-                if (this.params[i].mod == module &&
-                    this.params[i].sig == signal) {
-                    return (this.params[i].val == "true")
-                }
-            return false;
-        }
-        public isEqual(module: string, signal: string, value: string): boolean {
-            for (let i = 0; i < this.params.length; i++)
-                if (this.params[i].mod == module &&
-                    this.params[i].sig == signal) {
-                    return (this.params[i].val == value)
+        public onEvent(module: string, signal: string, value: string) {
+            for (let i = 0; i < this.items.length; i++)
+                if (this.items[i].mod == module &&
+                    this.items[i].sig == signal &&
+                    this.items[i].val == value) {
+                    this.items[i].hnd(module)
                 }
             return false;
         }
@@ -111,15 +100,6 @@ namespace EtCommon {
     export let events = new Events
 
     export type eventHandler = (id: string) => void
-    export type eventItem = { handler: eventHandler, module: string, signal: string }
-    export let eventArray: eventItem[] = []
-
-    function callEvent(module: string, signal: string) {
-        eventArray.forEach((item) => {
-            if (item.module == module && item.signal == signal)
-                item.handler(module)
-        })
-    }
 
     /////////////
     // STARTUP //
@@ -149,14 +129,11 @@ namespace EtCommon {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         if (!BUFFER.isEmpty()) {
             // an event message is not stored
-            // instead it is returned to be handled by 'callEvent'
+            // instead it is returned to be handled by 'onEvent'
             let msg = g_messages.add(BUFFER)
             BUFFER = ""
-            if (msg) {
-basic.showString(msg.val)
-                events.set( msg.mod, msg.sig, msg.val)
-                callEvent(msg.mod, msg.sig)
-            }
+            if (msg)
+                events.onEvent( msg.mod, msg.sig, msg.val)
         }
     })
 
