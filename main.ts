@@ -77,7 +77,7 @@ namespace EtCommon {
         constructor() {
             this.params = []
         }
-        public create(module: string, signal: string, value: string) {
+        public register(module: string, signal: string, value: string) {
             let p = new Event(module, signal, value)
             this.params.push(p)
         }
