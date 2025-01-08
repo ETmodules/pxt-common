@@ -87,11 +87,11 @@ namespace EtCommon {
             this.items.push(e)
         }
         public onEvent(module: string, signal: string, value: string) {
-basic.showNumber(this.items.length)
             for (let i = 0; i < this.items.length; i++)
                 if (this.items[i].mod == module &&
                     this.items[i].sig == signal &&
                     this.items[i].val == value) {
+basic.showNumber(i)
                     this.items[i].hnd(module)
                 }
         }
