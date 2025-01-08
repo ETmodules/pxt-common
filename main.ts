@@ -97,14 +97,15 @@ basic.showString("-")
 basic.showNumber(this.items.length)
             for (let i = 0; i < this.items.length; i++) {
 basic.showString("$")
-basic.showString(module)
+basic.showString(this.items[i].mod)
 basic.showString("-")
-basic.showString(signal)
+basic.showString(this.items[i].sig)
 basic.showString("-")
-basic.showString(value)
+basic.showString(this.items[i].val)
                 if (this.items[i].mod == module &&
                     this.items[i].sig == signal &&
                     this.items[i].val == value) {
+basic.showString("#")
 basic.showNumber(i)
                     this.items[i].hnd(module)
                 }
