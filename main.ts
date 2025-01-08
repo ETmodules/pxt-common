@@ -93,6 +93,14 @@ namespace EtCommon {
                     this.items[i].val == value) {
                     this.items[i].hnd(module)
                 }
+        }
+        public testEvent(module: string, signal: string, value: string) : boolean {
+            for (let i = 0; i < this.items.length; i++)
+                if (this.items[i].mod == module &&
+                    this.items[i].sig == signal &&
+                    this.items[i].val == value) {
+                    return true
+                }
             return false;
         }
     }
