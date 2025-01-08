@@ -88,11 +88,12 @@ let x = 0
         }
         public onEvent(module: string, signal: string, value: string) {
             for (let i = 0; i < this.items.length; i++) {
-                if ((this.items[i].mod == module) &&
-                    (this.items[i].sig == signal) &&
-                    (this.items[i].val == value)) {
+                let item = this.items[i]
+                if ((item.mod == module) &&
+                    (item.sig == signal) &&
+                    (item.val == value)) {
 basic.showNumber(++x)
-                    this.items[i].hnd(module)
+                    item.hnd(module)
                     return
                 }
             }
