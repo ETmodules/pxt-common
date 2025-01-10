@@ -92,7 +92,7 @@ namespace EtCommon {
                 if ((item.mod == module) &&
                     (item.sig == signal) &&
                     (item.val == value)) {
-basic.showString(value.substr(0,1))
+basic.showString(item.hnd == null ? "0" : value.substr(0,1))
                     item.hnd(module)
                     return
                 }
@@ -139,8 +139,7 @@ basic.showString(value.substr(0,1))
 
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-        BUFFER = "Et" + BUFFER.substr( 2) // correct transmission error
-basic.showString(BUFFER.substr(0,7))
+        BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
         if (!BUFFER.isEmpty()) {
             // an event message is not stored
             // instead it is returned to be handled by 'onEvent'
