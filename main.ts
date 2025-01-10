@@ -92,7 +92,6 @@ namespace EtCommon {
                 if ((item.mod == module) &&
                     (item.sig == signal) &&
                     (item.val == value)) {
-basic.showString(item.hnd == null ? "0" : value.substr(0,1))
                     item.hnd(module)
                     return
                 }
