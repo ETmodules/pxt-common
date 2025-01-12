@@ -226,6 +226,7 @@ namespace EtCommon {
 
     let BUFFER = ""
 
+    control.inBackground(() => {
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
@@ -238,6 +239,7 @@ namespace EtCommon {
                 events.onEvent( msg.mod, msg.sig, msg.val)
             }
         }
+    })
     })
 
     radio.onReceivedNumber(function(receivedNumber: number) {
@@ -285,9 +287,6 @@ namespace EtCommon {
     // before a call to 'getValue' the value must be requested by 'askValue'
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
-        let msg = serial.readUntil(Delimiters.NewLine.toString())
-        return "X"
-
         let val = ""
         do {
             val = g_messages.value(module, command, signal)
