@@ -240,8 +240,7 @@ namespace EtCommon {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
         if (!BUFFER.isEmpty()) {
-            // an event message is not stored
-            // instead it is returned to be handled by 'onEvent'
+basic.showString("+")
             g_messages.add(BUFFER)
             BUFFER = ""
         }
@@ -249,8 +248,10 @@ namespace EtCommon {
 
     basic.forever(function() {
         let msg = g_messages.event()
-        if (msg)
+        if (msg) {
+basic.showString("-")
             events.onEvent(msg.mod, msg.sig, msg.val)
+        }
     })
 
     radio.onReceivedNumber(function(receivedNumber: number) {
@@ -290,6 +291,7 @@ namespace EtCommon {
     // use 'getValue' to retrieve the value returned by the module
     // this applies to sensor modules
     export function askValue(module: string, signal: string) {
+basic.showString("A")
         let msg = module + ";A;" + signal
         sendData(msg)
     }
@@ -298,12 +300,13 @@ namespace EtCommon {
     // before a call to 'getValue' the value must be requested by 'askValue'
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
+basic.showString("G")
         let val = ""
         do {
             val = g_messages.value(module, command, signal)
-            basic.pause(100)
         }
         while (val.isEmpty())
+basic.showString("V")
         return val
     }
 
