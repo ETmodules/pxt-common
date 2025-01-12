@@ -229,11 +229,11 @@ namespace EtCommon {
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
+basic.showString("-" + BUFFER + "-")
         if (!BUFFER.isEmpty()) {
             // an event message is not stored
             // instead it is returned to be handled by 'onEvent'
             let msg = g_messages.add(BUFFER)
-basic.showString("-" + msg.cmd + "-" + msg.sig + "-")
             BUFFER = ""
             if (msg) {
                 events.onEvent( msg.mod, msg.sig, msg.val)
@@ -287,7 +287,7 @@ basic.showString("-" + msg.cmd + "-" + msg.sig + "-")
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
         let val = ""
-basic.showString("+" + command + "+" + signal + "+")
+basic.showString("+" + module + "+" + command + "+" + signal + "+")
         do {
             val = g_messages.value(module, command, signal)
             basic.pause(1)  // anable 'onDataReceived' to receive messages meanwhile
