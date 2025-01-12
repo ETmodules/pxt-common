@@ -242,18 +242,18 @@ namespace EtCommon {
 
     radio.onReceivedNumber(function(receivedNumber: number) {
         switch (receivedNumber) {
-            case Button.Button1: if (EventGamepad1) EventGamepad1; break;
-            case Button.Button2: if (EventGamepad2) EventGamepad2; break;
-            case Button.Button3: if (EventGamepad3) EventGamepad3; break;
-            case Button.Button4: if (EventGamepad4) EventGamepad4; break;
-            case Button.Button5: if (EventGamepad5) EventGamepad5; break;
-            case Button.Button6: if (EventGamepad6) EventGamepad6; break;
-            case Button.Button7: if (EventGamepad7) EventGamepad7; break;
-            case Button.Button8: if (EventGamepad8) EventGamepad8; break;
-            case Button.Button9: if (EventGamepad9) EventGamepad9; break;
-            case Button.Button10: if (EventGamepad10) EventGamepad10; break;
-            case Button.Button11: if (EventGamepad11) EventGamepad11; break;
-            case Button.Button12: if (EventGamepad12) EventGamepad12; break;
+            case Button.Button1: if (EventGamepad1) EventGamepad1(); break;
+            case Button.Button2: if (EventGamepad2) EventGamepad2(); break;
+            case Button.Button3: if (EventGamepad3) EventGamepad3(); break;
+            case Button.Button4: if (EventGamepad4) EventGamepad4(); break;
+            case Button.Button5: if (EventGamepad5) EventGamepad5(); break;
+            case Button.Button6: if (EventGamepad6) EventGamepad6(); break;
+            case Button.Button7: if (EventGamepad7) EventGamepad7(); break;
+            case Button.Button8: if (EventGamepad8) EventGamepad8(); break;
+            case Button.Button9: if (EventGamepad9) EventGamepad9(); break;
+            case Button.Button10: if (EventGamepad10) EventGamepad10(); break;
+            case Button.Button11: if (EventGamepad11) EventGamepad11(); break;
+            case Button.Button12: if (EventGamepad12) EventGamepad12(); break;
         }
     })
 
@@ -351,7 +351,6 @@ namespace EtCommon {
 
     //% block="when %button is pressed on gamepad"
     //% block.loc.nl="wanneer op de gamepad %button wordt ingedrukt"
-
     export function onGamepad(button: Button, programmableCode: () => void): void {
         switch (button) {
             case Button.Button1: EventGamepad1 = programmableCode; break;
