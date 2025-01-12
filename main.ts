@@ -243,10 +243,7 @@ basic.showString(m.cmd)
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
         if (!BUFFER.isEmpty()) {
 basic.showString("+")
-            while (LOCK) basic.pause(10)
-            LOCK = true
             g_messages.add(BUFFER)
-            LOCK = false
             BUFFER = ""
         }
     })
@@ -255,10 +252,7 @@ basic.showString("+")
         let msg = g_messages.event()
         if (msg) {
 basic.showString("-")
-            while (LOCK) basic.pause(10)
-            LOCK = true
             events.onEvent(msg.mod, msg.sig, msg.val)
-            LOCK = false
         }
         basic.pause(1)
     })
