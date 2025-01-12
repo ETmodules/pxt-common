@@ -304,7 +304,7 @@ basic.showString("G")
         let val = ""
         do {
             val = g_messages.value(module, command, signal)
-            basic.pause(10)
+            basic.pause(100)
         }
         while (val.isEmpty())
 basic.showString("V")
