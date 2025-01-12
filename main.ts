@@ -285,15 +285,14 @@ namespace EtCommon {
     // before a call to 'getValue' the value must be requested by 'askValue'
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
+        let msg = serial.readUntil(Delimiters.NewLine.toString())
+        return "X"
+
         let val = ""
-        control.inBackground(() => {
         do {
             val = g_messages.value(module, command, signal)
         }
         while (val.isEmpty())
-basic.showString("!")
-        })
-basic.showString("?")
         return val
     }
 
