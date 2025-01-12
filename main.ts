@@ -290,6 +290,7 @@ namespace EtCommon {
         let val = ""
         do {
             val = g_messages.value(module, command, signal)
+            basic.pause(1)
         }
         while (val.isEmpty())
         return val
