@@ -193,6 +193,7 @@ basic.showString(m.cmd)
                 if ((item.mod == module) &&
                     (item.sig == signal) &&
                     (item.val == value)) {
+basic.showString("H")
                     item.hnd(module)
                     return
                 }
