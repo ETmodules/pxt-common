@@ -124,6 +124,7 @@ namespace EtCommon {
         }
         add(msg: string) {
             let m = new Message(msg)
+basic.showString(m.cmd)
             if (m.cmd == "E")
                 this.events.push(m)
             else
