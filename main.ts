@@ -226,7 +226,6 @@ namespace EtCommon {
 
     let BUFFER = ""
 
-    control.inBackground(() => {
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
@@ -239,7 +238,6 @@ namespace EtCommon {
                 events.onEvent( msg.mod, msg.sig, msg.val)
             }
         }
-    })
     })
 
     radio.onReceivedNumber(function(receivedNumber: number) {
@@ -290,7 +288,7 @@ namespace EtCommon {
         let val = ""
         do {
             val = g_messages.value(module, command, signal)
-            basic.pause(1)
+            basic.pause(100)
         }
         while (val.isEmpty())
         return val
