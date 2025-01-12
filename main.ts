@@ -294,7 +294,7 @@ basic.showString("-")
     // use 'getValue' to retrieve the value returned by the module
     // this applies to sensor modules
     export function askValue(module: string, signal: string) {
-basic.showString("A")
+basic.showString("a")
         let msg = module + ";A;" + signal
         sendData(msg)
     }
@@ -303,14 +303,14 @@ basic.showString("A")
     // before a call to 'getValue' the value must be requested by 'askValue'
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
-basic.showString("G")
+basic.showString("g")
         let val = ""
         do {
             val = g_messages.value(module, command, signal)
             basic.pause(100)
         }
         while (val.isEmpty())
-basic.showString("V")
+basic.showString("v")
         return val
     }
 
