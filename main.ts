@@ -233,6 +233,7 @@ namespace EtCommon {
             // an event message is not stored
             // instead it is returned to be handled by 'onEvent'
             let msg = g_messages.add(BUFFER)
+basic.showString("-" + msg.cmd + "-" + msg.sig + "-")
             BUFFER = ""
             if (msg) {
                 events.onEvent( msg.mod, msg.sig, msg.val)
@@ -286,6 +287,7 @@ namespace EtCommon {
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
         let val = ""
+basic.showString("+" + command + "+" + signal + "+")
         do {
             val = g_messages.value(module, command, signal)
             basic.pause(1)  // anable 'onDataReceived' to receive messages meanwhile
