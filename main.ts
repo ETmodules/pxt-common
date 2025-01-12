@@ -117,15 +117,17 @@ namespace EtCommon {
 
     class Messages {
         messages: Message[]
+        events: Message[]
         constructor() {
             this.messages = []
+            this.events = []
         }
-        add(msg: string): Message {
+        add(msg: string) {
             let m = new Message(msg)
             if (m.cmd == "E")
-                return m // do not store events
-            this.messages.push(m)
-            return null
+                this.events.push(m)
+            else
+                this.messages.push(m)
         }
         at(index: number): Message {
             return this.messages[index]
@@ -143,6 +145,14 @@ namespace EtCommon {
                         this.messages.removeAt(i)
             }
             return ""
+        }
+        event() : Message {
+            if ( this.events.length ) {
+                let msg: Message = this.events[0]
+                this.events.removeAt(0)
+                return msg
+            }
+            return null
         }
     }
 
@@ -232,12 +242,15 @@ namespace EtCommon {
         if (!BUFFER.isEmpty()) {
             // an event message is not stored
             // instead it is returned to be handled by 'onEvent'
-            let msg = g_messages.add(BUFFER)
+            g_messages.add(BUFFER)
             BUFFER = ""
-            if (msg) {
-                events.onEvent( msg.mod, msg.sig, msg.val)
-            }
         }
+    })
+
+    basic.forever(function() {
+        let msg = g_messages.event()
+        if (msg)
+            events.onEvent(msg.mod, msg.sig, msg.val)
     })
 
     radio.onReceivedNumber(function(receivedNumber: number) {
