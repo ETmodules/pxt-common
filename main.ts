@@ -229,7 +229,6 @@ namespace EtCommon {
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
-basic.showString("-"+BUFFER.substr(12,1))
         if (!BUFFER.isEmpty()) {
             // an event message is not stored
             // instead it is returned to be handled by 'onEvent'
@@ -279,7 +278,6 @@ basic.showString("-"+BUFFER.substr(12,1))
     // this applies to sensor modules
     export function askValue(module: string, signal: string) {
         let msg = module + ";A;" + signal
-basic.showString("+A")
         sendData(msg)
     }
 
@@ -288,12 +286,13 @@ basic.showString("+A")
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
         let val = ""
-basic.showString("+G")
+        control.inBackground(() => {
         do {
             val = g_messages.value(module, command, signal)
-            basic.pause(10)  // anable 'onDataReceived' to receive messages meanwhile
+            basic.pause(1)  // anable 'onDataReceived' to receive messages meanwhile
         }                   // instead of 'yield', which isn't part of typescript
         while (val.isEmpty())
+        })
         return val
     }
 
