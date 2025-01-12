@@ -289,10 +289,11 @@ namespace EtCommon {
         control.inBackground(() => {
         do {
             val = g_messages.value(module, command, signal)
-            basic.pause(1)  // anable 'onDataReceived' to receive messages meanwhile
-        }                   // instead of 'yield', which isn't part of typescript
+        }
         while (val.isEmpty())
+basic.showString("!")
         })
+basic.showString("?")
         return val
     }
 
