@@ -150,11 +150,20 @@ namespace EtCommon {
         }
     })
 
+    let WAIT = 0
+    function sendData(data: string)
+    {
+        // give mbit some time between serial writes
+        while (control.millis() < WAIT) basic.pause(1)
+        WAIT = control.millis() + 10
+        serial.writeLine(data)
+    }
+
     // 'setValue' sends a signal value to a module to be set
     // this applies to actuator modules
     export function setValue(module: string, signal: string, value: string) {
         let msg = module + ";S;" + signal + ";" + value
-        serial.writeLine(msg)
+        sendData(msg)
     }
 
     // 'askValue' sends a signal to a module to request its value
@@ -162,7 +171,7 @@ namespace EtCommon {
     // this applies to sensor modules
     export function askValue(module: string, signal: string) {
         let msg = module + ";A;" + signal
-        serial.writeLine(msg)
+        sendData(msg)
     }
 
     // 'getValue' waits for a signal's value to be returned
@@ -184,7 +193,7 @@ namespace EtCommon {
     // this applies to sensor modules
     export function setEventValue(module: string, signal: string, value: string) {
         let msg = module + ";E;" + signal + ";" + value
-        serial.writeLine(msg)
+        sendData(msg)
     }
 
     //////////////////////
