@@ -185,6 +185,7 @@ namespace EtCommon {
                         handler: eventHandler) {
             let e = new Event(module, signal, value, handler)
             this.items.push(e)
+basic.pause(10)
         }
         public onEvent(module: string, signal: string, value: string) {
             for (let i = 0; i < this.items.length; i++) {
@@ -240,13 +241,13 @@ namespace EtCommon {
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
+basic.pause(10)
         if (!BUFFER.isEmpty()) {
             while (LOCK) pause(1)
             LOCK = true
             g_messages.add(BUFFER)
             LOCK = false
             BUFFER = ""
-            basic.pause(10)
         }
     })
 
@@ -256,9 +257,9 @@ namespace EtCommon {
         let msg = g_messages.event()
         LOCK = false
         if (msg) {
+basic.pause(10)
             events.onEvent(msg.mod, msg.sig, msg.val)
         }
-        basic.pause(10)
     })
 
     radio.onReceivedNumber(function(receivedNumber: number) {
@@ -299,6 +300,7 @@ namespace EtCommon {
     // this applies to sensor modules
     export function askValue(module: string, signal: string) {
         let msg = module + ";A;" + signal
+basic.pause(10)
         sendData(msg)
     }
 
@@ -307,12 +309,12 @@ namespace EtCommon {
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
         let val = ""
+basic.pause(10)
         do {
             while (LOCK) pause(1)
             LOCK = true
             val = g_messages.value(module, command, signal)
             LOCK = false
-            basic.pause(10)
         }
         while (val.isEmpty())
         return val
