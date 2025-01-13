@@ -213,28 +213,16 @@ namespace EtCommon {
     })
 
     let WAIT = 0
-    function sendData(data: string)
-    {
+
+    // 'sendValue' sends a signal value to a module
+    // in case of an actuator: the signal value is applied
+    // in case of a sensor: the signal represents a critical value
+    export function sendValue(module: string, signal: string, value: string) {
+        let msg = module + ";" + signal + ";" + value
         // give mbit some time between serial writes
         while (control.millis() < WAIT) basic.pause(1)
         WAIT = control.millis() + 10
-        serial.writeLine(data)
-    }
-
-    // 'setValue' sends a signal value to a module to be set
-    // this applies to actuator modules
-    export function setValue(module: string, signal: string, value: string) {
-        let msg = module + ";" + signal + ";" + value
-        sendData(msg)
-    }
-
-    // 'setEventValue' sends an event's critical value to a module
-    // after passing the critical value, the module will send an event
-    // (note that events are signals too, but accompanied by the command 'E')
-    // this applies to sensor modules
-    export function setEventValue(module: string, signal: string, value: string) {
-        let msg = module + ";" + signal + ";" + value
-        sendData(msg)
+        serial.writeLine(msg)
     }
 
     //////////////////////
@@ -305,6 +293,6 @@ namespace EtCommon {
     //% block="stop %id"
     //% block.loc.nl="stop %id"
     export function stop(id: string) {
-        EtCommon.setValue(id, "stop", "true")
+        EtCommon.sendValue(id, "stop", "true")
     }
 }
