@@ -255,7 +255,9 @@ basic.showString("+")
     basic.forever(function() {
         while (LOCK) pause(1)
         LOCK = true
+basic.showString("L")
         let msg = g_messages.event()
+basic.showString("U")
         LOCK = false
         if (msg) {
 basic.showString("-")
