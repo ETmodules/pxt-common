@@ -189,9 +189,9 @@ namespace EtCommon {
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         let line = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         line = "Et" + line.substr( 2) // corrects a fuzzy transmission error
-basic.showString(line)
         if (!line.isEmpty()) {
             let msg = new Message( line)
+basic.showString("-"+msg.mod+"-"+msg.sig+"-"+msg.val+"-")
             events.onEvent( msg.mod, msg.sig, msg.val)
         }
     })
