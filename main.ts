@@ -244,10 +244,7 @@ basic.showString("H")
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
 basic.showString("+")
         if (!BUFFER.isEmpty()) {
-            while (LOCK) pause(1)
-            LOCK = true
             g_messages.add(BUFFER)
-            LOCK = false
             BUFFER = ""
         }
     })
