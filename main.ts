@@ -311,7 +311,7 @@ namespace EtCommon {
             LOCK = true
             val = g_messages.value(module, command, signal)
             LOCK = false
-            basic.pause(1)
+            basic.pause(50)
         }
         while (val.isEmpty())
         return val
