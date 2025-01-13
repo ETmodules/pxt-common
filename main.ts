@@ -124,7 +124,6 @@ namespace EtCommon {
         }
         add(msg: string) {
             let m = new Message(msg)
-basic.showString(m.cmd)
             if (m.cmd == "E")
                 this.events.push(m)
             else
@@ -193,7 +192,6 @@ basic.showString(m.cmd)
                 if ((item.mod == module) &&
                     (item.sig == signal) &&
                     (item.val == value)) {
-basic.showString("H")
                     item.hnd(module)
                     return
                 }
@@ -243,7 +241,6 @@ basic.showString("H")
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
         if (!BUFFER.isEmpty()) {
-basic.showString("+")
             while (LOCK) pause(1)
             LOCK = true
             g_messages.add(BUFFER)
@@ -258,7 +255,6 @@ basic.showString("+")
         let msg = g_messages.event()
         LOCK = false
         if (msg) {
-basic.showString("-")
             events.onEvent(msg.mod, msg.sig, msg.val)
         }
         basic.pause(1)
@@ -301,7 +297,6 @@ basic.showString("-")
     // use 'getValue' to retrieve the value returned by the module
     // this applies to sensor modules
     export function askValue(module: string, signal: string) {
-basic.showString("a")
         let msg = module + ";A;" + signal
         sendData(msg)
     }
@@ -310,17 +305,15 @@ basic.showString("a")
     // before a call to 'getValue' the value must be requested by 'askValue'
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
-basic.showString("g")
         let val = ""
         do {
             while (LOCK) pause(1)
             LOCK = true
             val = g_messages.value(module, command, signal)
             LOCK = false
-            basic.pause(100)
+            basic.pause(1)
         }
         while (val.isEmpty())
-basic.showString("v")
         return val
     }
 
