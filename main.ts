@@ -244,13 +244,19 @@ basic.showString("H")
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
         if (!BUFFER.isEmpty()) {
 basic.showString("+")
+            while (LOCK) pause(1)
+            LOCK = true
             g_messages.add(BUFFER)
+            LOCK = false
             BUFFER = ""
         }
     })
 
     basic.forever(function() {
+        while (LOCK) pause(1)
+        LOCK = true
         let msg = g_messages.event()
+        LOCK = false
         if (msg) {
 basic.showString("-")
             events.onEvent(msg.mod, msg.sig, msg.val)
