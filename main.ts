@@ -246,6 +246,7 @@ namespace EtCommon {
             g_messages.add(BUFFER)
             LOCK = false
             BUFFER = ""
+            basic.pause(10)
         }
     })
 
@@ -257,7 +258,7 @@ namespace EtCommon {
         if (msg) {
             events.onEvent(msg.mod, msg.sig, msg.val)
         }
-        basic.pause(1)
+        basic.pause(10)
     })
 
     radio.onReceivedNumber(function(receivedNumber: number) {
@@ -311,7 +312,7 @@ namespace EtCommon {
             LOCK = true
             val = g_messages.value(module, command, signal)
             LOCK = false
-            basic.pause(50)
+            basic.pause(10)
         }
         while (val.isEmpty())
         return val
