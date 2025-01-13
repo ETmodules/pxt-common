@@ -214,10 +214,10 @@ namespace EtCommon {
 
     let WAIT = 0
 
-    // 'sendValue' sends a signal value to a module
+    // 'sendValue' sends a signal to a module
     // in case of an actuator: the signal value is applied
     // in case of a sensor: the signal represents a critical value
-    export function sendValue(module: string, signal: string, value: string) {
+    export function sendSignal(module: string, signal: string, value: string) {
         let msg = module + ";" + signal + ";" + value
         // give mbit some time between serial writes
         while (control.millis() < WAIT) basic.pause(1)
@@ -293,6 +293,6 @@ namespace EtCommon {
     //% block="stop %id"
     //% block.loc.nl="stop %id"
     export function stop(id: string) {
-        EtCommon.sendValue(id, "stop", "true")
+        EtCommon.sendSignal(id, "stop", "true")
     }
 }
