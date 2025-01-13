@@ -253,11 +253,10 @@ basic.showString("+")
     })
 
     basic.forever(function() {
+basic.showString("F")
         if (!LOCK) {
             LOCK = true
-basic.showString("L")
             let msg = g_messages.event()
-basic.showString("U")
             LOCK = false
             if (msg) {
 basic.showString("-")
@@ -314,8 +313,8 @@ basic.showString("a")
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
         let val = ""
-basic.showString("g")
         do {
+basic.showString("g")
             if (!LOCK) {
                 LOCK = true
                 val = g_messages.value(module, command, signal)
