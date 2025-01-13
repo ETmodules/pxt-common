@@ -313,7 +313,10 @@ basic.showString("a")
 basic.showString("g")
         let val = ""
         do {
+            while (LOCK) pause(1)
+            LOCK = true
             val = g_messages.value(module, command, signal)
+            LOCK = false
             basic.pause(100)
         }
         while (val.isEmpty())
