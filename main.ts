@@ -124,7 +124,6 @@ namespace EtCommon {
         }
         add(msg: string) {
             let m = new Message(msg)
-basic.showString(m.cmd)
             if (m.cmd == "E")
                 this.events.push(m)
             else
@@ -187,14 +186,12 @@ basic.showString(m.cmd)
             let e = new Event(module, signal, value, handler)
             this.items.push(e)
         }
-        public onEvent(module: string, signal: string, value: string) {
+        public onEvent(module: string, signal: string) {
             for (let i = 0; i < this.items.length; i++) {
                 let item = this.items[i]
                 if ((item.mod == module) &&
-                    (item.sig == signal) &&
-                    (item.val == value)) {
-basic.showString("H")
-                    item.hnd(module)
+                    (item.sig == signal)) {
+                    item.hnd(module, item.val)
                     return
                 }
             }
@@ -212,7 +209,7 @@ basic.showString("H")
 
     export let events = new Events
 
-    export type eventHandler = (id: string) => void
+    export type eventHandler = (id: string, value: string) => void
 
     /////////////
     // STARTUP //
@@ -237,25 +234,14 @@ basic.showString("H")
     ///////////////////////////
 
     let BUFFER = ""
-    let LOCK = false
 
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
-basic.showString("+")
         if (!BUFFER.isEmpty()) {
             g_messages.add(BUFFER)
             BUFFER = ""
         }
-    })
-
-    basic.forever(function() {
-        let msg = g_messages.event()
-        if (msg) {
-basic.showString("-")
-            events.onEvent(msg.mod, msg.sig, msg.val)
-        }
-        basic.pause(1)
     })
 
     radio.onReceivedNumber(function(receivedNumber: number) {
@@ -289,30 +275,6 @@ basic.showString("-")
     export function setValue(module: string, signal: string, value: string) {
         let msg = module + ";S;" + signal + ";" + value
         sendData(msg)
-    }
-
-    // 'askValue' sends a signal to a module to request its value
-    // use 'getValue' to retrieve the value returned by the module
-    // this applies to sensor modules
-    export function askValue(module: string, signal: string) {
-        let msg = module + ";A;" + signal
-basic.showString("a")
-        sendData(msg)
-    }
-
-    // 'getValue' waits for a signal's value to be returned
-    // before a call to 'getValue' the value must be requested by 'askValue'
-    // this applies to sensor modules
-    export function getValue(module: string, command: string, signal: string): string {
-        let val = ""
-        do {
-basic.showString("g")
-            val = g_messages.value(module, command, signal)
-            basic.pause(1)
-        }
-        while (val.isEmpty())
-basic.showString("v")
-        return val
     }
 
     // 'setEventValue' sends an event's critical value to a module
