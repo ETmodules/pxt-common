@@ -101,8 +101,8 @@ namespace EtCommon {
         constructor(msg: string) {
             let m = msg.split(';')
             this.mod = m[0]
-            this.sig = m[2]
-            this.val = m[3]
+            this.sig = m[1]
+            this.val = m[2]
         }
         message(): string {
             let msg = this.mod + ";" + this.sig + ";" + this.val
