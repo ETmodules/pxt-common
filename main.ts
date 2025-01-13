@@ -193,7 +193,7 @@ basic.showString(m.cmd)
                 if ((item.mod == module) &&
                     (item.sig == signal) &&
                     (item.val == value)) {
-basic.showString("E")
+basic.showString("H")
                     item.hnd(module)
                     return
                 }
@@ -316,6 +316,7 @@ basic.showString("v")
             LOCK = true
             val = g_messages.value(module, command, signal)
             LOCK = false
+            basic.pause(100)
         }
         while (val.isEmpty())
         return val
