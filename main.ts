@@ -310,7 +310,7 @@ basic.showString("a")
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
         let val = ""
-basic.showString("v")
+basic.showString("g")
         do {
             while (LOCK) pause(1)
             LOCK = true
@@ -319,6 +319,7 @@ basic.showString("v")
             basic.pause(100)
         }
         while (val.isEmpty())
+basic.showString("v")
         return val
     }
 
