@@ -101,79 +101,32 @@ namespace EtCommon {
         constructor(msg: string) {
             let m = msg.split(';')
             this.mod = m[0]
-            this.cmd = m[1]
             this.sig = m[2]
             this.val = m[3]
         }
         message(): string {
-            let msg = this.mod + ";" + this.cmd + ";" + this.sig + ";" + this.val
+            let msg = this.mod + ";" + this.sig + ";" + this.val
             return msg
         }
         public mod: string
-        public cmd: string
         public sig: string
         public val: string
     }
-
-    class Messages {
-        messages: Message[]
-        events: Message[]
-        constructor() {
-            this.messages = []
-            this.events = []
-        }
-        add(msg: string) {
-            let m = new Message(msg)
-            if (m.cmd == "E")
-                this.events.push(m)
-            else
-                this.messages.push(m)
-        }
-        at(index: number): Message {
-            return this.messages[index]
-        }
-        value(module: string, command: string, signal: string): string {
-            for (let i: number = 0; i < this.messages.length; i++) {
-                let m = this.messages[i]
-                if (!m) continue
-                if (m.mod == module && m.cmd == command && m.sig == signal) {
-                    this.messages.removeAt(i)
-                    return m.val
-                }
-                else // cleanup corrupt messages
-                    if (m.mod.isEmpty() || !m.cmd.isEmpty() || m.sig.isEmpty())
-                        this.messages.removeAt(i)
-            }
-            return ""
-        }
-        event() : Message {
-            if ( this.events.length ) {
-                let msg: Message = this.events[0]
-                this.events.removeAt(0)
-                return msg
-            }
-            return null
-        }
-    }
-
-    let g_messages = new Messages
 
     ////////////////////
     // EVENT HANDLING //
     ////////////////////
 
     class Event {
-        constructor(module: string, signal: string, value: string,
-                    handler: eventHandler) {
+        constructor(module: string, signal: string,
+                    handler: onEventHandler) {
             this.mod = module
             this.sig = signal
-            this.val = value
             this.hnd = handler
         }
         public mod: string
         public sig: string
-        public val: string
-        public hnd: eventHandler
+        public hnd: onEventHandler
     }
 
     class Events {
@@ -181,17 +134,17 @@ namespace EtCommon {
         constructor() {
             this.items = []
         }
-        public register(module: string, signal: string, value: string,
-                        handler: eventHandler) {
-            let e = new Event(module, signal, value, handler)
+        public register(module: string, signal: string,
+                        handler: onEventHandler) {
+            let e = new Event(module, signal, handler)
             this.items.push(e)
         }
-        public onEvent(module: string, signal: string) {
+        public onEvent(module: string, signal: string, value: string) {
             for (let i = 0; i < this.items.length; i++) {
                 let item = this.items[i]
                 if ((item.mod == module) &&
                     (item.sig == signal)) {
-                    item.hnd(module, item.val)
+                    item.hnd(module, value)
                     return
                 }
             }
@@ -199,17 +152,17 @@ namespace EtCommon {
         public testEvent(module: string, signal: string, value: string) : boolean {
             for (let i = 0; i < this.items.length; i++)
                 if ((this.items[i].mod == module) &&
-                    (this.items[i].sig == signal) &&
-                    (this.items[i].val == value)) {
+                    (this.items[i].sig == signal)) {
                     return true
                 }
             return false;
         }
     }
 
-    export let events = new Events
+    export type eventHandler = (id: string) => void
+    export type onEventHandler = (id: string, value: string) => void
 
-    export type eventHandler = (id: string, value: string) => void
+    export let events = new Events
 
     /////////////
     // STARTUP //
@@ -233,14 +186,12 @@ namespace EtCommon {
     // BASIC SIGNAL HANDLING //
     ///////////////////////////
 
-    let BUFFER = ""
-
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
-        BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-        BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
-        if (!BUFFER.isEmpty()) {
-            g_messages.add(BUFFER)
-            BUFFER = ""
+        let line = serial.readUntil(serial.delimiters(Delimiters.NewLine))
+        line = "Et" + line.substr( 2) // corrects a fuzzy transmission error
+        if (!line.isEmpty()) {
+            let msg = new Message( line)
+            events.onEvent( msg.mod, msg.sig, msg.val)
         }
     })
 
@@ -273,7 +224,7 @@ namespace EtCommon {
     // 'setValue' sends a signal value to a module to be set
     // this applies to actuator modules
     export function setValue(module: string, signal: string, value: string) {
-        let msg = module + ";S;" + signal + ";" + value
+        let msg = module + ";" + signal + ";" + value
         sendData(msg)
     }
 
@@ -282,7 +233,7 @@ namespace EtCommon {
     // (note that events are signals too, but accompanied by the command 'E')
     // this applies to sensor modules
     export function setEventValue(module: string, signal: string, value: string) {
-        let msg = module + ";E;" + signal + ";" + value
+        let msg = module + ";" + signal + ";" + value
         sendData(msg)
     }
 
