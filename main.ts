@@ -124,6 +124,7 @@ namespace EtCommon {
         }
         add(msg: string) {
             let m = new Message(msg)
+basic.showString(m.cmd)
             if (m.cmd == "E")
                 this.events.push(m)
             else
@@ -185,7 +186,6 @@ namespace EtCommon {
                         handler: eventHandler) {
             let e = new Event(module, signal, value, handler)
             this.items.push(e)
-basic.pause(10)
         }
         public onEvent(module: string, signal: string, value: string) {
             for (let i = 0; i < this.items.length; i++) {
@@ -193,6 +193,7 @@ basic.pause(10)
                 if ((item.mod == module) &&
                     (item.sig == signal) &&
                     (item.val == value)) {
+basic.showString("E")
                     item.hnd(module)
                     return
                 }
@@ -241,7 +242,7 @@ basic.pause(10)
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         BUFFER = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         BUFFER = "Et" + BUFFER.substr( 2) // corrects a fuzzy transmission error
-basic.pause(10)
+basic.showString("+")
         if (!BUFFER.isEmpty()) {
             while (LOCK) pause(1)
             LOCK = true
@@ -257,7 +258,7 @@ basic.pause(10)
         let msg = g_messages.event()
         LOCK = false
         if (msg) {
-basic.pause(10)
+basic.showString("-")
             events.onEvent(msg.mod, msg.sig, msg.val)
         }
     })
@@ -300,7 +301,7 @@ basic.pause(10)
     // this applies to sensor modules
     export function askValue(module: string, signal: string) {
         let msg = module + ";A;" + signal
-basic.pause(10)
+basic.showString("a")
         sendData(msg)
     }
 
@@ -309,7 +310,7 @@ basic.pause(10)
     // this applies to sensor modules
     export function getValue(module: string, command: string, signal: string): string {
         let val = ""
-basic.pause(10)
+basic.showString("v")
         do {
             while (LOCK) pause(1)
             LOCK = true
