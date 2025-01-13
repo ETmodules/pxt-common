@@ -253,16 +253,18 @@ basic.showString("+")
     })
 
     basic.forever(function() {
-        while (LOCK) pause(1)
-        LOCK = true
+        if (!LOCK) {
+            LOCK = true
 basic.showString("L")
-        let msg = g_messages.event()
+            let msg = g_messages.event()
 basic.showString("U")
-        LOCK = false
-        if (msg) {
+            LOCK = false
+            if (msg) {
 basic.showString("-")
-            events.onEvent(msg.mod, msg.sig, msg.val)
+                events.onEvent(msg.mod, msg.sig, msg.val)
+            }
         }
+        pause(1)
     })
 
     radio.onReceivedNumber(function(receivedNumber: number) {
@@ -314,11 +316,12 @@ basic.showString("a")
         let val = ""
 basic.showString("g")
         do {
-            while (LOCK) pause(1)
-            LOCK = true
-            val = g_messages.value(module, command, signal)
-            LOCK = false
-            basic.pause(100)
+            if (!LOCK) {
+                LOCK = true
+                val = g_messages.value(module, command, signal)
+                LOCK = false
+            }
+            pause(1)
         }
         while (val.isEmpty())
 basic.showString("v")
