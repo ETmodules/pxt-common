@@ -191,7 +191,6 @@ namespace EtCommon {
         line = "Et" + line.substr( 2) // corrects a fuzzy transmission error
         if (!line.isEmpty()) {
             let msg = new Message( line)
-basic.showString("-"+msg.mod+"-"+msg.sig+"-"+msg.val+"-")
             events.onEvent( msg.mod, msg.sig, msg.val)
         }
     })
