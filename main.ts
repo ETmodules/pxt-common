@@ -168,8 +168,6 @@ namespace EtCommon {
     // STARTUP //
     /////////////
 
-    let WAITID = ""
-
     serial.redirect(
         SerialPin.P13,
         SerialPin.P14,
@@ -193,12 +191,7 @@ namespace EtCommon {
         line = "Et" + line.substr( 2) // corrects a fuzzy transmission error
         if (!line.isEmpty()) {
             let msg = new Message( line)
-            if (msg.mod.isEmpty()) {
-                if (msg.sig == "connected")
-                    WAITID = msg.val
-            }
-            else
-                events.onEvent( msg.mod, msg.sig, msg.val)
+            events.onEvent( msg.mod, msg.sig, msg.val)
         }
     })
 
@@ -295,16 +288,6 @@ namespace EtCommon {
             case Button.Button11: EventGamepad11 = programmableCode; break;
             case Button.Button12: EventGamepad12 = programmableCode; break;
         }
-    }
-
-    //% block="wait until %id connected"
-    //% block.loc.nl="wacht totdat %id contact heeft"
-    export function waitConnect(id: string) {
-        WAITID = "";
-        // this signal is handled by the server itself
-        EtCommon.sendSignal("", "waitconnect", id)
-        while (id != WAITID) basic.pause(1)
-        WAITID = ""
     }
 
     //% block="stop %id"
