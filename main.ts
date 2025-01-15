@@ -162,7 +162,7 @@ namespace EtCommon {
         }
     }
 
-    let events = new Events
+    export let events = new Events
 
     /////////////
     // STARTUP //
