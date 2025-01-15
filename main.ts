@@ -7,6 +7,8 @@ namespace EtCommon {
     // GAMEPAD SUPPORT //
     /////////////////////
 
+    export type gamepadHandler = () => void
+
     export enum Button {
         //% block="black-top"
         //% block.loc.nl="zwart-boven"
@@ -45,8 +47,6 @@ namespace EtCommon {
         //% block.loc.nl="rood"
         Button12
     }
-
-    export type gamepadHandler = () => void
 
     let EventGamepad1: gamepadHandler
     let EventGamepad2: gamepadHandler
@@ -117,6 +117,9 @@ namespace EtCommon {
     // EVENT HANDLING //
     ////////////////////
 
+    export type eventHandler = (id: string) => void
+    export type onEventHandler = (id: string, value: string) => void
+
     class Event {
         constructor(module: string, signal: string,
                     handler: onEventHandler) {
@@ -159,10 +162,7 @@ namespace EtCommon {
         }
     }
 
-    export type eventHandler = (id: string) => void
-    export type onEventHandler = (id: string, value: string) => void
-
-    export let events = new Events
+    let events = new Events
 
     /////////////
     // STARTUP //
