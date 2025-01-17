@@ -3,8 +3,6 @@
 //% block.loc.nl="ElecTricks"
 namespace EtCommon {
 
-    let GROUP = 0
-
     ///////////////
     // MESSAGING //
     ///////////////
@@ -107,23 +105,6 @@ namespace EtCommon {
         }
     })
 
-    radio.onReceivedNumber(function(receivedNumber: number) {
-        switch (receivedNumber) {
-            case Gamepad.Button1: if (EventGamepad1) EventGamepad1(); break;
-            case Gamepad.Button2: if (EventGamepad2) EventGamepad2(); break;
-            case Gamepad.Button3: if (EventGamepad3) EventGamepad3(); break;
-            case Gamepad.Button4: if (EventGamepad4) EventGamepad4(); break;
-            case Gamepad.Button5: if (EventGamepad5) EventGamepad5(); break;
-            case Gamepad.Button6: if (EventGamepad6) EventGamepad6(); break;
-            case Gamepad.Button7: if (EventGamepad7) EventGamepad7(); break;
-            case Gamepad.Button8: if (EventGamepad8) EventGamepad8(); break;
-            case Gamepad.Button9: if (EventGamepad9) EventGamepad9(); break;
-            case Gamepad.Button10: if (EventGamepad10) EventGamepad10(); break;
-            case Gamepad.Button11: if (EventGamepad11) EventGamepad11(); break;
-            case Gamepad.Button12: if (EventGamepad12) EventGamepad12(); break;
-        }
-    })
-
     let WAIT = 0
 
     // 'sendValue' sends a signal to a module
@@ -174,13 +155,6 @@ namespace EtCommon {
     //% time.min=0 time.defl=1
     export function wait(time: number) {
         basic.pause(time * 1000)
-    }
-
-    //% block="join %group"
-    //% block.loc.nl="sluit aan bij %group"
-    export function setGroup(group: Group) {
-        GROUP = group + 1
-        radio.setGroup(GROUP)
     }
 
     //% block="stop %id"
