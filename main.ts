@@ -87,8 +87,9 @@ namespace EtCommon {
     serial.setRxBufferSize(128)
     serial.setTxBufferSize(128)
 
-    basic.pause(500)
+    basic.pause(1000)
     serial.writeLine("reset")
+    basic.pause(1000)
     basic.showIcon(IconNames.SmallHeart)
     while (serial.readUntil('\n').isEmpty()) { }
     basic.showIcon(IconNames.Heart)
