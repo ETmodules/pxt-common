@@ -100,6 +100,7 @@ namespace EtCommon {
 
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         let line = serial.readUntil(serial.delimiters(Delimiters.NewLine))
+basic.showString(line)
         if (!line.isEmpty()) {
             line = "Et" + line.substr(2) // corrects a fuzzy transmission error
             let msg = new Message( line)
