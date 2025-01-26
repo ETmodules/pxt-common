@@ -100,11 +100,10 @@ basic.showNumber(2)
     ///////////////////////////
 
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
-basic.showNumber(0)
         let line = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         line = "Et" + line.substr( 2) // corrects a fuzzy transmission error
         if (!line.isEmpty()) {
-basic.showNumber(1)
+basic.showString(line)
             let msg = new Message( line)
             events.onEvent( msg.mod, msg.sig, msg.val)
         }
