@@ -105,6 +105,10 @@ namespace EtCommon {
         if (!line.isEmpty()) {
             line = "Et" + line.substr(2) // corrects a fuzzy transmission error
             let msg = new Message( line)
+            if ( msg.mod == "Et#") {
+                basic.showString("#" + msg.val)
+                return;
+            }
             events.onEvent( msg.mod, msg.sig, msg.val)
         }
     })
