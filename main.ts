@@ -93,13 +93,7 @@ namespace EtCommon {
     basic.showIcon(IconNames.SmallDiamond)
     while (serial.readUntil('\n').isEmpty()) { }
     basic.pause(500)
-    basic.showLeds(`
-        # # . # .
-        # . . # .
-        # # . # #
-        # . . # .
-        # # . # #
-        `)
+    showLogo()
 
     ///////////////////////////
     // BASIC SIGNAL HANDLING //
@@ -114,13 +108,7 @@ namespace EtCommon {
                 // show number of modules currently connected
                 basic.clearScreen()
                 basic.showString("#" + msg.val)
-                basic.showLeds(`
-                    # # . # .
-                    # . . # .
-                    # # . # #
-                    # . . # .
-                    # # . # #
-                    `)
+                showLogo();
                 return;
             }
             events.onEvent( msg.mod, msg.sig, msg.val)
@@ -149,6 +137,18 @@ namespace EtCommon {
     //% block.loc.nl="uitleg: %dummy"
     //% min.defl="schrijf hier je uitleg"
     export function comment(dummy: string) {
+    }
+
+    //% block="show the 'Et' logo"
+    //% block.loc.nl="toon het 'Et'-logo"
+    export function showLogo(): void {
+        basic.showLeds(`
+                    # # . # .
+                    # . . # .
+                    # # . # #
+                    # . . # .
+                    # # . # #
+                    `)
     }
 
     //% block="a number from %min utai %max"
