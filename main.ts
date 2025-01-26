@@ -91,7 +91,7 @@ namespace EtCommon {
     serial.writeLine("reset")
     basic.pause(500)
     basic.showIcon(IconNames.SmallHeart)
-    serial.readUntil('\n')
+    while (serial.readUntil('\n').isEmpty()) { }
     basic.pause(500)
     basic.showIcon(IconNames.Heart)
 
