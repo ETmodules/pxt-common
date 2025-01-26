@@ -57,6 +57,7 @@ namespace EtCommon {
                 let item = this.items[i]
                 if ((item.mod == module) &&
                     (item.sig == signal)) {
+basic.showNumber(2)
                     item.hnd(module, value)
                     return
                 }
@@ -103,6 +104,7 @@ basic.showNumber(0)
         let line = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         line = "Et" + line.substr( 2) // corrects a fuzzy transmission error
         if (!line.isEmpty()) {
+basic.showNumber(1)
             let msg = new Message( line)
             events.onEvent( msg.mod, msg.sig, msg.val)
         }
