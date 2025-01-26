@@ -87,12 +87,12 @@ namespace EtCommon {
     serial.setRxBufferSize(128)
     serial.setTxBufferSize(128)
 
-//    basic.pause(1000)
-//    serial.writeLine("reset")
-//    basic.pause(1000)
+    basic.pause(1000)
+    serial.writeLine("reset")
+    basic.pause(1000)
     basic.showIcon(IconNames.SmallHeart)
-//    while (serial.readUntil('\n').isEmpty()) { }
-//    basic.showIcon(IconNames.Heart)
+    while (serial.readUntil('\n').isEmpty()) { }
+    basic.showIcon(IconNames.Heart)
 
     ///////////////////////////
     // BASIC SIGNAL HANDLING //
@@ -100,16 +100,14 @@ namespace EtCommon {
 
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         let line = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-        if (line ==  "") {
-            serial.writeLine( "reset")
-basic.showIcon(IconNames.Heart)
+        if (line.isEmpty()) {
+            serial.writeLine( "NAC")
             return
         }
-        if (!line.isEmpty()) {
-            line = "Et" + line.substr(2) // corrects a fuzzy transmission error
-            let msg = new Message( line)
-            events.onEvent( msg.mod, msg.sig, msg.val)
-        }
+        line = "Et" + line.substr(2) // corrects a fuzzy transmission error
+        let msg = new Message( line)
+        events.onEvent( msg.mod, msg.sig, msg.val)
+        serial.writeLine("ACK")
     })
 
     let WAIT = 0
