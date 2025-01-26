@@ -114,7 +114,6 @@ namespace EtCommon {
                 // show number of modules currently connected
                 basic.clearScreen()
                 basic.showString("#" + msg.val)
-                basic.pause(500)
                 basic.showLeds(`
                     # # . # .
                     # . . # .
