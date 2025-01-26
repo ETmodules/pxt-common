@@ -90,10 +90,16 @@ namespace EtCommon {
     basic.pause(1000)
     serial.writeLine("reset")
     basic.pause(500)
-    basic.showIcon(IconNames.SmallHeart)
+    basic.showIcon(IconNames.SmallDiamond)
     while (serial.readUntil('\n').isEmpty()) { }
     basic.pause(500)
-    basic.showIcon(IconNames.Heart)
+    basic.showLeds(`
+        # # . # .
+        # . . # .
+        # # . # #
+        # . . # .
+        # # . # #
+        `)
 
     ///////////////////////////
     // BASIC SIGNAL HANDLING //
@@ -107,6 +113,14 @@ namespace EtCommon {
             if ( msg.sig == "#" && msg.mod == "Et#") {
                 // show number of modules currently connected
                 basic.showString("#" + msg.val)
+                basic.pause(500)
+                basic.showLeds(`
+                    # # . # .
+                    # . . # .
+                    # # . # #
+                    # . . # .
+                    # # . # #
+                    `)
                 return;
             }
             events.onEvent( msg.mod, msg.sig, msg.val)
