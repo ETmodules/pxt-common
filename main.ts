@@ -100,14 +100,11 @@ namespace EtCommon {
 
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         let line = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-        if (line.isEmpty()) {
-            serial.writeLine( "NAC")
-            return
+        if (!line.isEmpty()) {
+            line = "Et" + line.substr(2) // corrects a fuzzy transmission error
+            let msg = new Message( line)
+            events.onEvent( msg.mod, msg.sig, msg.val)
         }
-        line = "Et" + line.substr(2) // corrects a fuzzy transmission error
-        let msg = new Message( line)
-        events.onEvent( msg.mod, msg.sig, msg.val)
-        serial.writeLine("ACK")
     })
 
     let WAIT = 0
