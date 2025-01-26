@@ -106,8 +106,8 @@ namespace EtCommon {
             let msg = new Message( line)
             if ( msg.sig == "#" && msg.mod == "Et#") {
                 // show number of modules currently connected
-                basic.clearScreen()
-                basic.showString("#" + msg.val)
+                showLogo();
+                basic.showString(msg.val)
                 showLogo();
                 return;
             }
