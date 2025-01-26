@@ -91,8 +91,7 @@ namespace EtCommon {
     serial.writeLine("reset")
     basic.pause(500)
     basic.showIcon(IconNames.SmallHeart)
-    let tm = control.micros() + 2000
-    while (serial.readUntil('\n').isEmpty() && (tm > control.micros())) { }
+    serial.readUntil('\n')
     basic.pause(500)
     basic.showIcon(IconNames.Heart)
 
