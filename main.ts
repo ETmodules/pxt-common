@@ -89,9 +89,11 @@ namespace EtCommon {
 
     basic.pause(1000)
     serial.writeLine("reset")
-    basic.pause(1000)
+    basic.pause(500)
     basic.showIcon(IconNames.SmallHeart)
     while (serial.readUntil('\n').isEmpty()) { }
+    basic.pause(500)
+    serial.readUntil('\n')
     basic.showIcon(IconNames.Heart)
 
     ///////////////////////////
@@ -100,7 +102,6 @@ namespace EtCommon {
 
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         let line = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-basic.showString(line)
         if (!line.isEmpty()) {
             line = "Et" + line.substr(2) // corrects a fuzzy transmission error
             let msg = new Message( line)
