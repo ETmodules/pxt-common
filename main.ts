@@ -96,18 +96,6 @@ namespace EtCommon {
     // BASIC SIGNAL HANDLING //
     ///////////////////////////
 
-    input.onButtonPressed(Button.A, function() {
-        serial.writeLine("modcount")
-        let cnt : string
-        do {
-            cnt = serial.readUntil('\n')
-            basic.pause(1)
-        } while (cnt.isEmpty())
-        showLogo()
-        basic.showString(cnt)
-        showLogo()
-    })
-
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         let line = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         if (!line.isEmpty()) {
