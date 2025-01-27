@@ -102,7 +102,7 @@ namespace EtCommon {
         do {
             cnt = serial.readUntil('\n')
             basic.pause(1)
-        } while (!cnt.isEmpty())
+        } while (cnt.isEmpty())
         showLogo()
         basic.showString(cnt)
         showLogo()
