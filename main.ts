@@ -99,20 +99,20 @@ namespace EtCommon {
     // BASIC SIGNAL HANDLING //
     ///////////////////////////
 
+    input.onButtonPressed(Button.A, function() {
+        serial.writeLine("modcount")
+        basic.pause(500)
+        let cnt = serial.readUntil('\n')
+        showLogo()
+        basic.showString(cnt)
+        showLogo()
+    })
+
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         let line = serial.readUntil(serial.delimiters(Delimiters.NewLine))
         if (!line.isEmpty()) {
             line = "Et" + line.substr(2) // corrects a fuzzy transmission error
             let msg = new Message( line)
-/*
-            if ( msg.sig == "#" && msg.mod == "Et#") {
-                // show number of modules currently connected
-                showLogo();
-                basic.showString(msg.val)
-                showLogo();
-                return;
-            }
-*/
             events.onEvent( msg.mod, msg.sig, msg.val)
         }
     })
