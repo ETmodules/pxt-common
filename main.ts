@@ -104,6 +104,7 @@ namespace EtCommon {
         if (!line.isEmpty()) {
             line = "Et" + line.substr(2) // corrects a fuzzy transmission error
             let msg = new Message( line)
+/*
             if ( msg.sig == "#" && msg.mod == "Et#") {
                 // show number of modules currently connected
                 showLogo();
@@ -111,6 +112,7 @@ namespace EtCommon {
                 showLogo();
                 return;
             }
+*/
             events.onEvent( msg.mod, msg.sig, msg.val)
         }
     })
