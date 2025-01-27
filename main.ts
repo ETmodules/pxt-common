@@ -98,8 +98,11 @@ namespace EtCommon {
 
     input.onButtonPressed(Button.A, function() {
         serial.writeLine("modcount")
-        basic.pause(1000)
-        let cnt = serial.readUntil('\n')
+        let cnt : string
+        do {
+            cnt = serial.readUntil('\n')
+            basic.pause(1)
+        } while (!cnt.isEmpty())
         showLogo()
         basic.showString(cnt)
         showLogo()
