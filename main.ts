@@ -52,6 +52,13 @@ namespace EtCommon {
             let e = new Event(module, signal, handler)
             this.items.push(e)
         }
+        public unregister(module: string) {
+            for (let i = this.items.length - 1; i >= 0; i--) {
+                if ((this.items[i].mod == module)) {
+                    this.items.splice(i,1)
+                }
+            }
+        }
         public onEvent(module: string, signal: string, value: string) {
             for (let i = 0; i < this.items.length; i++) {
                 let item = this.items[i]
